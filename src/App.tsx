@@ -9,7 +9,7 @@ import {
   Mail, Copy, CheckCircle2, ArrowLeft, BarChart3, Pill, Users,
   Siren, FileBadge, Languages, Trophy, Target, Syringe, Trash2, Pencil,
   AlertTriangle, ClipboardList, ExternalLink, Loader2, Flame,
-  Zap, Star, Clock, CheckCircle
+  Zap, Star, Clock, CheckCircle, LogOut
 } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { PandaBot } from './components/PandaBot'
@@ -2126,52 +2126,315 @@ function Sharing(){
 // --------------------------------------------------------------------------
 function SettingsPage({
   gamificationEnabled,
-  setGamificationEnabled
+  setGamificationEnabled,
+  dark,
+  setDark,
+  onSignOut,
+  notify
 }: {
   gamificationEnabled: boolean
   setGamificationEnabled: (val: boolean) => void
+  dark: boolean
+  setDark: (val: boolean) => void
+  onSignOut: () => void
+  notify: (msg: string, isCelebrate?: boolean) => void
 }) {
+  const [name, setName] = useState('Aniket Sharma')
+  const [email, setEmail] = useState('aniket@example.com')
+  const [phone, setPhone] = useState('+91 98765 43210')
+  const [bloodGroup, setBloodGroup] = useState('B+')
+  const [emergencyContact, setEmergencyContact] = useState('+91 98765 01234')
+  const [emailNotif, setEmailNotif] = useState(true)
+  const [medReminders, setMedReminders] = useState(true)
+  const [shareAlerts, setShareAlerts] = useState(true)
+  const [aiSummary, setAiSummary] = useState(true)
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false)
+
+  const handleSaveProfile = (e: React.FormEvent) => {
+    e.preventDefault()
+    notify('Profile changes saved successfully! ✨', true)
+  }
+
+  const handleExportData = () => {
+    notify('📦 Preparing your complete encrypted health vault export...')
+    setTimeout(() => {
+      notify('✅ Medical vault export ready! Download started.', true)
+    }, 1200)
+  }
+
   return (
-    <motion.div initial={{opacity:0}} animate={{opacity:1}}>
+    <motion.div initial={{opacity:0, y: 10}} animate={{opacity:1, y: 0}} className="settings-page-wrap">
       <div className="page-title">
         <div>
           <p style={{fontWeight: 800, color: '#3185E8'}}>ACCOUNT & PREFERENCES</p>
           <h1 style={{fontFamily: "'Nunito', sans-serif", fontWeight: 900}}>Settings</h1>
         </div>
+        <button 
+          className="duo-btn duo-btn-coral small"
+          onClick={() => setShowSignOutConfirm(true)}
+          style={{padding: '9px 16px'}}
+        >
+          <LogOut size={15}/> Sign Out
+        </button>
       </div>
+
       <div className="settings-grid">
-        <section className="duo-card profile-settings" style={{borderRadius: 24}}>
-          <h2 style={{fontFamily: "'Nunito', sans-serif", fontWeight: 900}}>Personal Profile</h2>
-          <div className="profile-avatar" style={{borderRadius: 20}}>AS</div>
-          <label>Full name<input defaultValue="Aniket Sharma"/></label>
-          <label>Email address<input defaultValue="aniket@example.com"/></label>
-          <button className="duo-btn duo-btn-primary" style={{marginTop: 18}}>Save Changes</button>
-        </section>
-
-        <section className="duo-card" style={{borderRadius: 24}}>
-          <h2 style={{fontFamily: "'Nunito', sans-serif", fontWeight: 900}}>Preferences & Gamification</h2>
-          
-          <div className="setting-row">
-            <div>
-              <span style={{fontWeight: 800}}>Duolingo-Style Gamification</span>
-              <p style={{fontSize: 10, color: '#728096', margin: '2px 0 0'}}>XP points, badges & daily missions</p>
+        {/* Left Column: Profile Information */}
+        <div className="settings-col">
+          <section className="duo-card profile-settings">
+            <div className="settings-card-header">
+              <div>
+                <h2>Personal Profile</h2>
+                <p>Manage your personal and emergency health information</p>
+              </div>
+              <PandaBot size="small" pose="dashboard"/>
             </div>
-            <button 
-              className={gamificationEnabled?'switch on':'switch'} 
-              onClick={()=>setGamificationEnabled(!gamificationEnabled)}
-            >
-              <i/>
-            </button>
-          </div>
 
-          {['Dark theme','Email notifications','Share access alerts','Appointment reminders','Google AI auto-summary'].map((x,i)=>(
-            <div className="setting-row" key={x}>
-              <span style={{fontWeight: 700}}>{x}</span>
-              <button className={i===0?'switch':'switch on'}><i/></button>
+            <div className="profile-header-banner">
+              <div className="profile-avatar-large">AS</div>
+              <div className="profile-identity">
+                <h3>{name}</h3>
+                <span className="profile-email-badge"><Check size={12}/> Verified Patient</span>
+              </div>
             </div>
-          ))}
-        </section>
+
+            <form onSubmit={handleSaveProfile} className="settings-form">
+              <div className="settings-field">
+                <label>Full Legal Name</label>
+                <div className="settings-input-wrap">
+                  <UserRound size={16}/>
+                  <input value={name} onChange={e=>setName(e.target.value)} required/>
+                </div>
+              </div>
+
+              <div className="settings-field">
+                <label>Email Address</label>
+                <div className="settings-input-wrap">
+                  <Mail size={16}/>
+                  <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required/>
+                </div>
+              </div>
+
+              <div className="settings-row-2">
+                <div className="settings-field">
+                  <label>Mobile Number</label>
+                  <input value={phone} onChange={e=>setPhone(e.target.value)}/>
+                </div>
+                <div className="settings-field">
+                  <label>Blood Group</label>
+                  <select value={bloodGroup} onChange={e=>setBloodGroup(e.target.value)}>
+                    <option value="A+">A+ (Positive)</option>
+                    <option value="A-">A- (Negative)</option>
+                    <option value="B+">B+ (Positive)</option>
+                    <option value="B-">B- (Negative)</option>
+                    <option value="O+">O+ (Positive)</option>
+                    <option value="O-">O- (Negative)</option>
+                    <option value="AB+">AB+ (Positive)</option>
+                    <option value="AB-">AB- (Negative)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="settings-field">
+                <label>Emergency Contact Phone</label>
+                <input value={emergencyContact} onChange={e=>setEmergencyContact(e.target.value)}/>
+              </div>
+
+              <button type="submit" className="duo-btn duo-btn-primary" style={{marginTop: 14, width: '100%'}}>
+                <Check size={16}/> Save Profile Changes
+              </button>
+            </form>
+          </section>
+
+          {/* Privacy & Security Card */}
+          <section className="duo-card" style={{marginTop: 20}}>
+            <div className="settings-card-header">
+              <div>
+                <h2>Security & Encryption</h2>
+                <p>Medical data encryption standards and data export</p>
+              </div>
+              <ShieldCheck size={24} color="#16A34A"/>
+            </div>
+
+            <div className="security-badges-row">
+              <div className="security-badge-pill">
+                <LockKeyhole size={14} color="#2563EB"/>
+                <span>AES-256 Bit Encryption</span>
+              </div>
+              <div className="security-badge-pill">
+                <ShieldCheck size={14} color="#16A34A"/>
+                <span>HIPAA Aligned</span>
+              </div>
+              <div className="security-badge-pill">
+                <Zap size={14} color="#F59E0B"/>
+                <span>Email 2FA Active</span>
+              </div>
+            </div>
+
+            <div className="export-vault-action" style={{marginTop: 16}}>
+              <div>
+                <strong style={{fontSize: 13, display: 'block'}}>Export Entire Health Vault</strong>
+                <span style={{fontSize: 11, color: 'var(--text-muted)'}}>Download records, lab tests, and timeline as encrypted archive</span>
+              </div>
+              <button className="duo-btn duo-btn-secondary small" onClick={handleExportData}>
+                <Download size={14}/> Export
+              </button>
+            </div>
+          </section>
+        </div>
+
+        {/* Right Column: Preferences, Gamification, Appearance & Sign Out */}
+        <div className="settings-col">
+          <section className="duo-card">
+            <div className="settings-card-header">
+              <div>
+                <h2>Preferences & Gamification</h2>
+                <p>Customize your Duolingo-inspired experience and theme</p>
+              </div>
+              <Trophy size={24} color="#F59E0B"/>
+            </div>
+
+            {/* Gamification Toggle */}
+            <div className="setting-row highlight-setting">
+              <div className="setting-info">
+                <div className="setting-title-row">
+                  <Flame size={16} color="#EA580C"/>
+                  <span className="setting-title">Duolingo-Style Gamification</span>
+                </div>
+                <p className="setting-desc">XP points, streak counters, achievement badges & organization missions</p>
+              </div>
+              <button 
+                className={gamificationEnabled?'switch on':'switch'} 
+                onClick={()=>{
+                  setGamificationEnabled(!gamificationEnabled)
+                  notify(gamificationEnabled ? 'Gamification mode paused.' : 'Gamification mode enabled! 🎮', !gamificationEnabled)
+                }}
+                aria-label="Toggle gamification"
+              >
+                <i/>
+              </button>
+            </div>
+
+            {/* Theme Selector (Light vs Instagram Golden Pink) */}
+            <div className="setting-row">
+              <div className="setting-info">
+                <div className="setting-title-row">
+                  <Sun size={16} color={dark ? '#E1306C' : '#3185E8'}/>
+                  <span className="setting-title">Instagram Golden-Pink Dark Theme</span>
+                </div>
+                <p className="setting-desc">Switch between healthcare blue light theme and sunset golden-pink velvet theme</p>
+              </div>
+              <button 
+                className={dark?'switch on':'switch'} 
+                onClick={()=>{
+                  setDark(!dark)
+                  notify(dark ? 'Switched to Healthcare Light Theme' : 'Switched to Golden-Pink Sunset Theme! 🌸', true)
+                }}
+                aria-label="Toggle dark theme"
+              >
+                <i/>
+              </button>
+            </div>
+
+            {/* Notification & AI Toggles */}
+            <div className="setting-row">
+              <div className="setting-info">
+                <span className="setting-title">Email Notifications</span>
+                <p className="setting-desc">Receive updates when doctors view shared links or upload reports</p>
+              </div>
+              <button className={emailNotif?'switch on':'switch'} onClick={()=>setEmailNotif(!emailNotif)}><i/></button>
+            </div>
+
+            <div className="setting-row">
+              <div className="setting-info">
+                <span className="setting-title">Medicine Schedule Reminders</span>
+                <p className="setting-desc">Gentle push alerts for upcoming morning, noon, and night dosages</p>
+              </div>
+              <button className={medReminders?'switch on':'switch'} onClick={()=>setMedReminders(!medReminders)}><i/></button>
+            </div>
+
+            <div className="setting-row">
+              <div className="setting-info">
+                <span className="setting-title">Doctor Share Access Alerts</span>
+                <p className="setting-desc">Real-time alerts whenever a temporary doctor access link is accessed</p>
+              </div>
+              <button className={shareAlerts?'switch on':'switch'} onClick={()=>setShareAlerts(!shareAlerts)}><i/></button>
+            </div>
+
+            <div className="setting-row">
+              <div className="setting-info">
+                <span className="setting-title">Google-Powered AI Auto-Summary</span>
+                <p className="setting-desc">Automatically analyze OCR extracts for diagnoses, medications, and advice</p>
+              </div>
+              <button className={aiSummary?'switch on':'switch'} onClick={()=>setAiSummary(!aiSummary)}><i/></button>
+            </div>
+          </section>
+
+          {/* Account Management & Sign Out Card */}
+          <section className="duo-card settings-danger-card" style={{marginTop: 20}}>
+            <div className="settings-card-header">
+              <div>
+                <h2>Account Management</h2>
+                <p>Sign out of your active session on this device</p>
+              </div>
+              <LogOut size={22} color="#EF4444"/>
+            </div>
+
+            <div className="signout-box">
+              <div className="signout-text">
+                <strong>Active Session</strong>
+                <span>Signed in as <b>{email}</b></span>
+              </div>
+              <button 
+                className="duo-btn duo-btn-coral"
+                onClick={()=>setShowSignOutConfirm(true)}
+              >
+                <LogOut size={16}/> Sign Out
+              </button>
+            </div>
+          </section>
+        </div>
       </div>
+
+      {/* Sign Out Confirmation Modal */}
+      {showSignOutConfirm && (
+        <div className="modal-backdrop" onMouseDown={()=>setShowSignOutConfirm(false)}>
+          <motion.div 
+            className="duo-card signout-modal" 
+            initial={{scale: 0.94, opacity: 0}} 
+            animate={{scale: 1, opacity: 1}} 
+            onMouseDown={e=>e.stopPropagation()}
+          >
+            <div style={{textAlign: 'center', marginBottom: 16}}>
+              <PandaBot size="medium" pose="welcome"/>
+              <h2 style={{fontSize: 20, fontWeight: 900, margin: '14px 0 6px'}}>Sign Out of MediVault?</h2>
+              <p style={{fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5, margin: 0}}>
+                You can log back in anytime using your email address and OTP verification code.
+              </p>
+            </div>
+
+            <div style={{display: 'flex', gap: 10, marginTop: 22}}>
+              <button 
+                className="duo-btn duo-btn-secondary" 
+                style={{flex: 1}}
+                onClick={()=>setShowSignOutConfirm(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className="duo-btn duo-btn-coral" 
+                style={{flex: 1}}
+                onClick={()=>{
+                  setShowSignOutConfirm(false)
+                  onSignOut()
+                }}
+              >
+                <LogOut size={16}/> Yes, Sign Out
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </motion.div>
   )
 }
@@ -2547,6 +2810,14 @@ export default function App() {
             <SettingsPage 
               gamificationEnabled={gamificationEnabled}
               setGamificationEnabled={setGamificationEnabled}
+              dark={dark}
+              setDark={setDark}
+              onSignOut={() => {
+                setView('landing')
+                setPage('Overview')
+                notify('👋 Signed out of MediVault. See you soon!')
+              }}
+              notify={notify}
             />
           )}
         </div>

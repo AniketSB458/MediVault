@@ -875,10 +875,168 @@ a {
   margin-top: 2px;
 }
 
+/* ==========================================================================
+   OVERVIEW PAGE STYLES & LAYOUT
+   ========================================================================== */
+
+.overview-page-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.overview-date-pill {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.app.dark .overview-date-pill {
+  color: #FCAF45;
+}
+
+.overview-greeting-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: var(--navy);
+}
+
+/* Quest Banner Refinements */
+.quest-header-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.quest-streak-pill {
+  font-size: 11px;
+  padding: 3px 9px;
+}
+.quest-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.quest-progress-count {
+  font-size: 13px;
+  color: #16A34A;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.app.dark .quest-progress-count {
+  color: #FCAF45;
+}
+.quest-missions-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.quest-xp-chip {
+  opacity: 0.95;
+  font-size: 10.5px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.app.dark .quest-xp-chip {
+  background: rgba(255, 255, 255, 0.15);
+}
+.quest-trophy-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding-left: 18px;
+  border-left: 2px dashed var(--line);
+}
+.app.dark .quest-trophy-column {
+  border-left-color: rgba(225, 48, 108, 0.35);
+}
+.quest-xp-badge {
+  padding: 8px 18px;
+  font-size: 14px;
+}
+.quest-level-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* Quick Actions in Overview */
 .quick-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  padding: 6px 0 0;
+}
+
+.quick-action-btn {
+  height: 72px !important;
+  justify-content: flex-start !important;
+  padding: 10px 14px !important;
+  text-align: left !important;
+  width: 100% !important;
+  border-radius: 16px !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+.quick-action-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+.quick-action-btn:hover .quick-action-icon {
+  transform: scale(1.06);
+}
+.quick-action-icon.blue { background: #EFF6FF; color: #3185E8; }
+.quick-action-icon.purple { background: #F5F3FF; color: #8B5CF6; }
+.quick-action-icon.green { background: #ECFDF5; color: #10B981; }
+.quick-action-icon.cyan { background: #ECFEFF; color: #06B6D4; }
+
+.app.dark .quick-action-icon.blue { background: rgba(225, 48, 108, 0.18); color: #E1306C; }
+.app.dark .quick-action-icon.purple { background: rgba(131, 58, 180, 0.18); color: #C13584; }
+.app.dark .quick-action-icon.green { background: rgba(252, 175, 69, 0.18); color: #FCAF45; }
+.app.dark .quick-action-icon.cyan { background: rgba(247, 119, 55, 0.18); color: #F77737; }
+
+.quick-action-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+.quick-action-content b {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy);
+  display: block;
+}
+.quick-action-content small {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 1px;
 }
 
 /* ==========================================================================

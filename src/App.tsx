@@ -413,18 +413,18 @@ function Overview({
   const progressPct = Math.round((completedMissionsCount / dailyMissions.length) * 100)
 
   return (
-    <motion.div initial={{opacity:0}} animate={{opacity:1}}>
+    <motion.div initial={{opacity:0, y: 8}} animate={{opacity:1, y: 0}} className="overview-page-wrap">
       {/* Header Greeting */}
-      <div className="page-title" style={{alignItems: 'center'}}>
+      <div className="overview-header-row">
         <div>
-          <p style={{fontWeight: 800, color: '#3185E8', letterSpacing: '0.08em'}}>
+          <p className="overview-date-pill">
             WEDNESDAY, 18 FEBRUARY · DAILY HEALTH JOURNEY
           </p>
-          <h1 style={{fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 32}}>
+          <h1 className="overview-greeting-title">
             Good morning, Aniket! 👋
           </h1>
         </div>
-        <button className="duo-btn duo-btn-primary" onClick={()=>setPage('Upload Documents')}>
+        <button className="duo-btn duo-btn-primary large" onClick={()=>setPage('Upload Documents')}>
           <Plus size={18}/> Upload Document
         </button>
       </div>
@@ -435,11 +435,11 @@ function Overview({
           <PandaBot size="medium" pose="dashboard"/>
         </div>
         <div className="quest-content">
-          <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6}}>
-            <div className="quest-tag" style={{margin: 0}}>
+          <div className="quest-header-tags">
+            <div className="quest-tag">
               <Target size={14}/> Daily Organization Mission
             </div>
-            <span className="game-pill streak" style={{fontSize: 11, padding: '2px 8px'}}>
+            <span className="game-pill streak quest-streak-pill">
               <Flame size={13}/> {streak}-Day Streak
             </span>
           </div>
@@ -448,36 +448,36 @@ function Overview({
             Complete daily organization tasks to earn XP gems, level up your vault, and keep your loved ones' records up to date!
           </p>
           
-          <div style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6}}>
+          <div className="quest-progress-row">
             <div className="duo-progress-bar-wrap" style={{flex: 1}}>
               <div className="duo-progress-bar-fill" style={{width: `${progressPct}%`}}/>
             </div>
-            <strong style={{fontSize: 13, color: '#16A34A', fontWeight: 800}}>
+            <strong className="quest-progress-count">
               {completedMissionsCount} of {dailyMissions.length} Done
             </strong>
           </div>
 
-          <div style={{display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 10}}>
+          <div className="quest-missions-list">
             {dailyMissions.map(m => (
               <button 
                 key={m.id}
-                className={`duo-btn ${m.done ? 'duo-btn-success' : 'duo-btn-secondary'} small`}
+                className={`duo-btn ${m.done ? 'duo-btn-success' : 'duo-btn-secondary'} small quest-task-btn`}
                 onClick={() => !m.done && onCompleteMission(m.id)}
               >
                 {m.done ? <CheckCircle size={14}/> : <Clock size={14}/>}
                 <span>{m.title}</span>
-                <span style={{opacity: 0.9, fontSize: 10}}>+{m.xp} XP</span>
+                <span className="quest-xp-chip">+{m.xp} XP</span>
               </button>
             ))}
           </div>
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flex: 'none'}}>
-          <button className="game-pill xp" onClick={onOpenAchievements} style={{padding: '8px 16px', fontSize: 14}}>
+        <div className="quest-trophy-column">
+          <button className="game-pill xp quest-xp-badge" onClick={onOpenAchievements}>
             <Trophy size={18} color="#D97706"/>
             <span>{xp} XP</span>
           </button>
-          <small style={{fontSize: 11, color: '#728096', fontWeight: 700}}>Level {Math.floor(xp/100) + 1} Archivist</small>
+          <small className="quest-level-label">Level {Math.floor(xp/100) + 1} Archivist</small>
         </div>
       </section>
 
@@ -498,7 +498,7 @@ function Overview({
             action="View all" 
             onAction={()=>setPage('Medical Records')}
           />
-          <div className="document-list" style={{marginTop: 10}}>
+          <div className="document-list" style={{marginTop: 6}}>
             {initialRecords.slice(0, 4).map(r => <DocumentRow key={r.title} r={r}/>)}
           </div>
         </section>
@@ -506,7 +506,7 @@ function Overview({
         <section className="duo-card">
           <PanelHead title="Document Distribution" sub="By category type" action="6 months"/>
           <div className="distribution">
-            <div className="donut" style={{boxShadow: '0 8px 24px rgba(49, 133, 232, 0.15)'}}>
+            <div className="donut">
               <div><strong>24</strong><span>Total Files</span></div>
             </div>
             <div className="legend">
@@ -530,45 +530,45 @@ function Overview({
         </section>
 
         <section className="duo-card">
-          <PanelHead title="Quick Actions"/>
-          <div className="quick-actions" style={{padding: '10px 0'}}>
-            <button className="duo-btn duo-btn-secondary" style={{height: 70, justifyContent: 'flex-start'}} onClick={()=>setPage('Upload Documents')}>
-              <span className="blue" style={{borderRadius: 12, padding: 8, background: '#EFF6FF', color: '#3185E8', marginRight: 10}}>
+          <PanelHead title="Quick Actions" sub="Instant tools for records & appointments"/>
+          <div className="quick-actions">
+            <button className="duo-btn duo-btn-secondary quick-action-btn" onClick={()=>setPage('Upload Documents')}>
+              <span className="quick-action-icon blue">
                 <Upload size={20}/>
               </span>
-              <div style={{textAlign: 'left'}}>
-                <b style={{fontSize: 13}}>Upload Document</b>
-                <small style={{display: 'block', color: '#728096', fontSize: 10}}>Instant OCR + Google AI</small>
+              <div className="quick-action-content">
+                <b>Upload Document</b>
+                <small>Instant OCR + Google AI</small>
               </div>
             </button>
 
-            <button className="duo-btn duo-btn-secondary" style={{height: 70, justifyContent: 'flex-start'}} onClick={()=>setPage('Medicine Reminders')}>
-              <span className="purple" style={{borderRadius: 12, padding: 8, background: '#F5F3FF', color: '#7C3AED', marginRight: 10}}>
+            <button className="duo-btn duo-btn-secondary quick-action-btn" onClick={()=>setPage('Medicine Reminders')}>
+              <span className="quick-action-icon purple">
                 <Pill size={20}/>
               </span>
-              <div style={{textAlign: 'left'}}>
-                <b style={{fontSize: 13}}>Medicine Schedule</b>
-                <small style={{display: 'block', color: '#728096', fontSize: 10}}>Log daily doses (+15 XP)</small>
+              <div className="quick-action-content">
+                <b>Medicine Schedule</b>
+                <small>Log daily doses (+15 XP)</small>
               </div>
             </button>
 
-            <button className="duo-btn duo-btn-secondary" style={{height: 70, justifyContent: 'flex-start'}} onClick={()=>share()}>
-              <span className="green" style={{borderRadius: 12, padding: 8, background: '#ECFDF5', color: '#16A34A', marginRight: 10}}>
+            <button className="duo-btn duo-btn-secondary quick-action-btn" onClick={()=>share()}>
+              <span className="quick-action-icon green">
                 <Share2 size={20}/>
               </span>
-              <div style={{textAlign: 'left'}}>
-                <b style={{fontSize: 13}}>Share with Doctor</b>
-                <small style={{display: 'block', color: '#728096', fontSize: 10}}>Secure expiring QR token</small>
+              <div className="quick-action-content">
+                <b>Share with Doctor</b>
+                <small>Secure expiring QR token</small>
               </div>
             </button>
 
-            <button className="duo-btn duo-btn-secondary" style={{height: 70, justifyContent: 'flex-start'}} onClick={()=>setPage('Emergency Health ID')}>
-              <span className="cyan" style={{borderRadius: 12, padding: 8, background: '#ECFEFF', color: '#0891B2', marginRight: 10}}>
+            <button className="duo-btn duo-btn-secondary quick-action-btn" onClick={()=>setPage('Emergency Health ID')}>
+              <span className="quick-action-icon cyan">
                 <Siren size={20}/>
               </span>
-              <div style={{textAlign: 'left'}}>
-                <b style={{fontSize: 13}}>Emergency ID Card</b>
-                <small style={{display: 'block', color: '#728096', fontSize: 10}}>Digital medical bracelet</small>
+              <div className="quick-action-content">
+                <b>Emergency ID Card</b>
+                <small>Digital medical bracelet</small>
               </div>
             </button>
           </div>
@@ -593,10 +593,10 @@ function Stat({icon,label,value,detail,tone}:{icon:ReactNode,label:string,value:
 
 function PanelHead({title,sub,action,onAction}:{title:string,sub?:string,action?:string,onAction?:()=>void}){
   return (
-    <div className="panel-head" style={{borderBottom: '2px solid var(--line-soft)', paddingBottom: 12}}>
+    <div className="panel-head">
       <div>
-        <h2 style={{fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 16}}>{title}</h2>
-        {sub&&<p style={{fontSize: 11, color: '#728096', margin: '3px 0 0'}}>{sub}</p>}
+        <h2>{title}</h2>
+        {sub&&<p>{sub}</p>}
       </div>
       {action&&<button className="duo-btn duo-btn-secondary small" onClick={onAction}>{action} <ChevronDown size={13}/></button>}
     </div>
@@ -611,13 +611,13 @@ function DocumentRow({r}:{r:MedicalRecord}){
     return <Microscope size={18} color="#2563EB"/>
   }
   return (
-    <div className="document-row" style={{borderBottom: '1.5px solid var(--line-soft)', padding: '12px 6px'}}>
-      <div className={`document-icon ${r.tone}`} style={{borderRadius: 12}}>{getIcon()}</div>
+    <div className="document-row">
+      <div className={`document-icon ${r.tone}`}>{getIcon()}</div>
       <div className="document-info">
-        <strong style={{fontSize: 13, fontWeight: 800}}>{r.title}</strong>
-        <span style={{fontSize: 11, color: '#728096'}}>{r.type} · {r.doctor}</span>
+        <strong>{r.title}</strong>
+        <span>{r.type} · {r.doctor}</span>
       </div>
-      <span className={r.status==='Verified'?'status verified':'status review'} style={{fontWeight: 700}}>
+      <span className={r.status==='Verified'?'status verified':'status review'}>
         {r.status==='Verified'?<Check size={12}/>:<Activity size={12}/>} {r.status}
       </span>
     </div>

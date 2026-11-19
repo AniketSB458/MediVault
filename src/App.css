@@ -853,6 +853,9 @@ a {
   font-weight: 800;
   color: #3185E8;
 }
+.app.dark .timeline-item>div {
+  color: #FCAF45;
+}
 .timeline-item>i {
   width: 12px;
   height: 12px;
@@ -860,6 +863,10 @@ a {
   border-radius: 50%;
   margin-right: 14px;
   background: #FFFFFF;
+}
+.app.dark .timeline-item>i {
+  border-color: #E1306C;
+  background: #2A0E34;
 }
 .timeline-item span {
   display: flex;
@@ -873,6 +880,47 @@ a {
   font-size: 10.5px;
   color: var(--text-muted);
   margin-top: 2px;
+}
+.app.dark .timeline-item strong {
+  color: #FFF0F6;
+}
+.app.dark .timeline-item small {
+  color: #D9A8C4;
+}
+
+/* Dark Theme Overrides for Document Rows & Panels */
+.app.dark .document-row {
+  border-bottom-color: rgba(225, 48, 108, 0.15);
+}
+.app.dark .document-info strong {
+  color: #FFF0F6;
+}
+.app.dark .document-info span {
+  color: #D9A8C4;
+}
+.app.dark .panel-head h2 {
+  color: #FFF0F6;
+}
+.app.dark .panel-head p {
+  color: #D9A8C4;
+}
+.app.dark .donut strong {
+  color: #FFF0F6;
+}
+.app.dark .donut span {
+  color: #D9A8C4;
+}
+.app.dark .legend p {
+  color: #FFF0F6;
+}
+.app.dark .legend b {
+  color: #FFF0F6;
+}
+.app.dark .quest-title {
+  color: #FFF0F6;
+}
+.app.dark .quest-desc {
+  color: #D9A8C4;
 }
 
 /* ==========================================================================
